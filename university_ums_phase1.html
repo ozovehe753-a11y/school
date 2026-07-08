@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University of Technology – UMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0A1628;--navy-light:#112240;--navy-mid:#1a3a5c;
+  --gold:#F5A623;--gold-light:#FFF3DC;--gold-dark:#C47D0E;
+  --white:#FFFFFF;--off-white:#F8F9FC;--slate:#64748B;
+  --border:#E2E8F0;--success:#10B981;--danger:#EF4444;--info:#3B82F6;
+  --text:#1E293B;--text-muted:#64748B;
+}
+body{font-family:'Inter',sans-serif;background:#F1F5F9;color:var(--text);min-height:100vh}
+
+/* AUTH SCREENS */
+.auth-wrap{display:flex;min-height:100vh}
+.auth-left{width:420px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;padding:48px 40px;position:relative;overflow:hidden}
+.auth-left::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(245,166,35,0.08)}
+.auth-left::after{content:'';position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:rgba(245,166,35,0.05)}
+.crest{display:flex;align-items:center;gap:12px;margin-bottom:auto}
+.crest-icon{width:48px;height:48px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.crest-icon svg{width:28px;height:28px;fill:var(--navy)}
+.crest-name{color:white;font-weight:700;font-size:14px;line-height:1.3}
+.crest-name span{display:block;font-weight:400;font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:0.5px;text-transform:uppercase}
+.auth-hero{margin-bottom:40px;z-index:1;position:relative}
+.auth-hero h1{color:white;font-size:28px;font-weight:700;line-height:1.3;margin-bottom:12px}
+.auth-hero p{color:rgba(255,255,255,0.55);font-size:14px;line-height:1.6}
+.auth-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.auth-badge{background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.25);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px}
+.auth-right{flex:1;display:flex;align-items:center;justify-content:center;padding:40px}
+.auth-card{background:white;border-radius:16px;padding:40px;width:100%;max-width:420px;border:1px solid var(--border)}
+.auth-tab-row{display:flex;gap:4px;background:var(--off-white);border-radius:10px;padding:4px;margin-bottom:28px}
+.auth-tab{flex:1;text-align:center;padding:8px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:.15s;color:var(--text-muted);background:transparent;border:none}
+.auth-tab.active{background:white;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);transition:.15s;outline:none}
+.form-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,22,40,0.08)}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+.btn-primary{width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;margin-top:8px}
+.btn-primary:hover{background:var(--navy-light)}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:var(--gold-dark)}
+.form-link{color:var(--navy);font-size:13px;text-decoration:none;font-weight:500}
+.form-divider{text-align:center;color:var(--text-muted);font-size:13px;margin:16px 0;position:relative}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
+.form-divider::before{left:0}.form-divider::after{right:0}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.role-btn{padding:10px 6px;border:1.5px solid var(--border);border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;text-align:center;transition:.15s;color:var(--text-muted);background:white}
+.role-btn:hover{border-color:var(--navy);color:var(--navy)}
+.role-btn.selected{border-color:var(--gold);background:var(--gold-light);color:var(--navy)}
+.otp-row{display:flex;gap:8px}
+.otp-input{flex:1;width:100%;padding:12px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:18px;font-weight:600;text-align:center;outline:none;transition:.15s}
+.otp-input:focus{border-color:var(--navy)}
+.tfa-method{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;margin-bottom:8px}
+.tfa-method:hover{border-color:var(--navy)}
+.tfa-method.selected{border-color:var(--gold);background:var(--gold-light)}
+.tfa-icon{width:36px;height:36px;border-radius:8px;background:var(--off-white);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.tfa-label{font-size:13px;font-weight:600;color:var(--text)}
+.tfa-sub{font-size:11px;color:var(--text-muted)}
+.alert{padding:12px 14px;border-radius:8px;font-size:13px;margin-bottom:16px}
+.alert-success{background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0}
+.alert-info{background:#DBEAFE;color:#1E40AF;border:1px solid #BFDBFE}
+
+/* DASHBOARD */
+.dash-wrap{display:flex;min-height:100vh}
+.sidebar{width:240px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column}
+.sidebar-head{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-logo{display:flex;align-items:center;gap:10px}
+.sidebar-logo-icon{width:32px;height:32px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.sidebar-logo-icon svg{width:18px;height:18px;fill:var(--navy)}
+.sidebar-logo-text{color:white;font-weight:700;font-size:12px;line-height:1.2}
+.sidebar-logo-text span{display:block;color:rgba(255,255,255,0.45);font-weight:400;font-size:10px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.user-chip{display:flex;align-items:center;gap:10px}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{color:white;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:10px;color:var(--gold);font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+.sidebar-nav{padding:12px 12px;flex:1;overflow-y:auto}
+.nav-section{margin-bottom:20px}
+.nav-section-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;transition:.12s;color:rgba(255,255,255,0.6);font-size:12px;font-weight:500;position:relative}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:white}
+.nav-item.active{background:rgba(245,166,35,0.15);color:var(--gold)}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2}
+.nav-badge{margin-left:auto;background:var(--danger);color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px}
+.sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08)}
+.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;transition:.12s}
+.logout-btn:hover{color:var(--danger)}
+.logout-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:white;border-bottom:1px solid var(--border);padding:0 28px;height:58px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+.topbar-title{font-size:16px;font-weight:700;color:var(--text);flex:1}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--off-white);border:1px solid var(--border);border-radius:8px;padding:7px 12px;width:220px}
+.topbar-search input{border:none;background:none;font-size:13px;color:var(--text);outline:none;width:100%;font-family:'Inter',sans-serif}
+.topbar-search svg{width:14px;height:14px;stroke:var(--text-muted);fill:none;stroke-width:2;flex-shrink:0}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.topbar-btn{width:34px;height:34px;border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:white;transition:.12s;position:relative}
+.topbar-btn:hover{background:var(--off-white)}
+.topbar-btn svg{width:15px;height:15px;stroke:var(--text-muted);fill:none;stroke-width:2}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--danger);border-radius:50%;border:1.5px solid white}
+.sem-badge{background:var(--gold-light);color:var(--gold-dark);font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;border:1px solid rgba(245,166,35,0.3)}
+.content{flex:1;overflow-y:auto;padding:28px}
+
+/* DASHBOARD PANELS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:white;border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:2px 0 0 2px}
+.stat-card.blue::after{background:#3B82F6}
+.stat-card.green::after{background:var(--success)}
+.stat-card.gold::after{background:var(--gold)}
+.stat-card.purple::after{background:#8B5CF6}
+.stat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.stat-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.stat-card.blue .stat-icon{background:#DBEAFE;color:#3B82F6}
+.stat-card.green .stat-icon{background:#D1FAE5;color:var(--success)}
+.stat-card.gold .stat-icon{background:var(--gold-light);color:var(--gold-dark)}
+.stat-card.purple .stat-icon{background:#EDE9FE;color:#8B5CF6}
+.stat-val{font-size:24px;font-weight:700;color:var(--text);margin-bottom:2px}
+.stat-label{font-size:12px;color:var(--text-muted)}
+.stat-change{font-size:11px;margin-top:6px;font-weight:600}
+.stat-change.up{color:var(--success)}.stat-change.down{color:var(--danger)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.panel-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:14px;font-weight:700;color:var(--text)}
+.panel-link{font-size:12px;color:var(--navy);font-weight:500;cursor:pointer}
+.panel-body{padding:16px 20px}
+.user-table{width:100%;border-collapse:collapse}
+.user-table th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:8px 0;border-bottom:1px solid var(--border);text-align:left}
+.user-table td{font-size:13px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text)}
+.user-table tr:last-child td{border-bottom:none}
+.role-pill{font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px}
+.pill-admin{background:#DBEAFE;color:#1E40AF}
+.pill-student{background:#D1FAE5;color:#065F46}
+.pill-lecturer{background:#EDE9FE;color:#6D28D9}
+.pill-staff{background:#FEF3C7;color:#92400E}
+.pill-super{background:#FEE2E2;color:#991B1B}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px}
+.dot-active{background:var(--success)}.dot-inactive{background:var(--text-muted)}
+.activity-list{list-style:none}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.activity-item:last-child{border-bottom:none}
+.activity-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.activity-icon.login{background:#DBEAFE;color:#3B82F6}
+.activity-icon.reg{background:#D1FAE5;color:var(--success)}
+.activity-icon.warn{background:#FEF3C7;color:#D97706}
+.activity-text{flex:1;font-size:12px;color:var(--text);line-height:1.5}
+.activity-time{font-size:10px;color:var(--text-muted);white-space:nowrap}
+.role-chart{display:flex;flex-direction:column;gap:10px}
+.role-bar-row{display:flex;align-items:center;gap:10px}
+.role-bar-label{font-size:12px;color:var(--text);width:80px;flex-shrink:0}
+.role-bar-track{flex:1;height:8px;background:var(--off-white);border-radius:4px;overflow:hidden}
+.role-bar-fill{height:100%;border-radius:4px;transition:width .3s}
+.role-bar-count{font-size:11px;color:var(--text-muted);width:36px;text-align:right;flex-shrink:0}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:flex;min-height:100vh}
+.screen.active.dash{flex-direction:row}
+
+/* 2FA */
+.tfa-app-mock{background:var(--navy);border-radius:12px;padding:20px;text-align:center;margin:16px 0}
+.tfa-code-display{font-size:32px;font-weight:700;color:var(--gold);letter-spacing:6px;font-family:monospace}
+.tfa-timer{font-size:11px;color:rgba(255,255,255,0.5);margin-top:6px}
+
+/* NAV highlight */
+.phase-nav{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.phase-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);color:var(--text-muted);background:white;transition:.15s}
+.phase-btn:hover{border-color:var(--navy);color:var(--navy)}
+.phase-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+
+/* User management */
+.um-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.um-search{display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--border);border-radius:8px;padding:8px 12px;flex:1}
+.um-search input{border:none;background:none;font-size:13px;outline:none;width:100%;font-family:'Inter',sans-serif;color:var(--text)}
+.um-search svg{width:14px;height:14px;stroke:var(--text-muted);fill:none;stroke-width:2;flex-shrink:0}
+.um-filter{padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;cursor:pointer;color:var(--text);font-family:'Inter',sans-serif}
+.btn-add{padding:8px 16px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+.btn-add svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5}
+.users-panel{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.users-table{width:100%;border-collapse:collapse}
+.users-table th{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;padding:12px 16px;border-bottom:1px solid var(--border);text-align:left;background:var(--off-white)}
+.users-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text)}
+.users-table tr:last-child td{border-bottom:none}
+.users-table tr:hover td{background:#FAFBFC}
+.user-cell{display:flex;align-items:center;gap:10px}
+.u-avatar{width:30px;height:30px;border-radius:50%;background:var(--off-white);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--slate);flex-shrink:0}
+.u-name{font-weight:600;font-size:13px}.u-email{font-size:11px;color:var(--text-muted)}
+.status-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px}
+.badge-active{background:#D1FAE5;color:#065F46}
+.badge-inactive{background:#F1F5F9;color:var(--text-muted)}
+.badge-pending{background:#FEF3C7;color:#92400E}
+.action-btns{display:flex;gap:4px}
+.action-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.12s}
+.action-btn:hover{background:var(--off-white)}
+.action-btn svg{width:13px;height:13px;stroke:var(--text-muted);fill:none;stroke-width:2}
+.action-btn.danger:hover{background:#FEE2E2;border-color:#FCA5A5}
+.action-btn.danger:hover svg{stroke:var(--danger)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="screen active" id="screen-login">
+  <div class="auth-wrap" style="width:100%">
+    <div class="auth-left">
+      <div class="crest">
+        <div class="crest-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/><path d="M12 2v20M3 7l9 5 9-5" stroke="white" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="crest-name">University of Technology<span>Management System</span></div>
+      </div>
+      <div class="auth-hero">
+        <h1>Your academic journey, all in one place.</h1>
+        <p>A unified platform for students, faculty, staff and administrators — from admissions to graduation.</p>
+        <div class="auth-badges">
+          <span class="auth-badge">Phase 1 – Auth</span>
+          <span class="auth-badge">Role-Based</span>
+          <span class="auth-badge">Secure 2FA</span>
+          <span class="auth-badge">20 Phases</span>
+        </div>
+      </div>
+      <div style="color:rgba(255,255,255,0.25);font-size:11px">© 2025 University of Technology · UMS v1.0</div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-card">
+        <div style="margin-bottom:24px">
+          <h2 style="font-size:22px;font-weight:700;color:var(--text)">Welcome back</h2>
+          <p style="font-size:14px;color:var(--text-muted);margin-top:4px">Sign in to your UMS account</p>
+        </div>
+        <div class="auth-tab-row">
+          <button class="auth-tab active">Sign In</button>
+          <button class="auth-tab" onclick="showScreen('screen-register')">Register</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email / Matric No.</label>
+          <input class="form-input" type="email" placeholder="e.g. john.doe@utech.edu.ng" value="admin@utech.edu.ng">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" value="••••••••••">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);cursor:pointer">
+            <input type="checkbox" checked> Remember me
+          </label>
+          <a href="#" class="form-link" onclick="showScreen('screen-reset')">Forgot password?</a>
+        </div>
+        <button class="btn-primary" onclick="showScreen('screen-2fa')">Sign In</button>
+        <div class="form-divider" style="margin-top:20px">or continue as</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn-primary" style="background:var(--off-white);color:var(--text);border:1px solid var(--border);flex:1;margin-top:0;font-size:12px" onclick="showDash('Student')">Student</button>
+          <button class="btn-primary" style="background:var(--off-white);color:var(--text);border:1px solid var(--border);flex:1;margin-top:0;font-size:12px" onclick="showDash('Lecturer')">Lecturer</button>
+          <button class="btn-primary btn-gold" style="flex:1;margin-top:0;font-size:12px" onclick="showDash('Super Admin')">Super Admin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER SCREEN -->
+<div class="screen" id="screen-register">
+  <div class="auth-wrap" style="width:100%">
+    <div class="auth-left">
+      <div class="crest">
+        <div class="crest-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/><path d="M12 2v20M3 7l9 5 9-5" stroke="white" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="crest-name">University of Technology<span>Management System</span></div>
+      </div>
+      <div class="auth-hero">
+        <h1>Join UMS as the right role.</h1>
+        <p>Staff, students, parents and alumni each get a tailored dashboard with the exact tools they need.</p>
+        <div class="auth-badges">
+          <span class="auth-badge">Super Admin</span>
+          <span class="auth-badge">Lecturer</span>
+          <span class="auth-badge">Student</span>
+          <span class="auth-badge">Parent</span>
+          <span class="auth-badge">Alumni</span>
+          <span class="auth-badge">Bursary</span>
+        </div>
+      </div>
+      <div style="color:rgba(255,255,255,0.25);font-size:11px">© 2025 University of Technology · UMS v1.0</div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-card">
+        <div style="margin-bottom:24px">
+          <h2 style="font-size:22px;font-weight:700">Create account</h2>
+          <p style="font-size:14px;color:var(--text-muted);margin-top:4px">Select your role to get started</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select Role</label>
+          <div class="role-grid">
+            <div class="role-btn selected" onclick="selectRole(this)">👑 Super Admin</div>
+            <div class="role-btn" onclick="selectRole(this)">🛡 Admin</div>
+            <div class="role-btn" onclick="selectRole(this)">📋 Registrar</div>
+            <div class="role-btn" onclick="selectRole(this)">💰 Bursary</div>
+            <div class="role-btn" onclick="selectRole(this)">🏠 Hostel</div>
+            <div class="role-btn" onclick="selectRole(this)">📚 Lecturer</div>
+            <div class="role-btn" onclick="selectRole(this)">🎓 Student</div>
+            <div class="role-btn" onclick="selectRole(this)">👨‍👩‍👧 Parent</div>
+            <div class="role-btn" onclick="selectRole(this)">🤝 Alumni</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input class="form-input" placeholder="Chukwuemeka">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input class="form-input" placeholder="Okafor">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Institutional Email</label>
+          <input class="form-input" type="email" placeholder="c.okafor@utech.edu.ng">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-input" type="password" placeholder="Min 8 chars">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm</label>
+            <input class="form-input" type="password" placeholder="Repeat">
+          </div>
+        </div>
+        <button class="btn-primary" onclick="showScreen('screen-verify')">Create Account & Verify Email</button>
+        <p style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:14px">Already registered? <a href="#" class="form-link" onclick="showScreen('screen-login')">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL VERIFY SCREEN -->
+<div class="screen" id="screen-verify">
+  <div class="auth-wrap" style="width:100%;align-items:center;justify-content:center;background:var(--off-white)">
+    <div class="auth-card" style="max-width:420px;text-align:center">
+      <div style="width:64px;height:64px;background:#DBEAFE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px">📧</div>
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Check your email</h2>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px">We sent a 6-digit verification code to <strong>c.okafor@utech.edu.ng</strong></p>
+      <div class="otp-row" style="margin-bottom:20px">
+        <input class="otp-input" maxlength="1" value="4">
+        <input class="otp-input" maxlength="1" value="7">
+        <input class="otp-input" maxlength="1" value="2">
+        <input class="otp-input" maxlength="1" value="">
+        <input class="otp-input" maxlength="1" value="">
+        <input class="otp-input" maxlength="1" value="">
+      </div>
+      <div class="alert alert-info">Code expires in <strong>9:42</strong></div>
+      <button class="btn-primary" onclick="showScreen('screen-2fa')">Verify Email</button>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:16px">Didn't get it? <a href="#" class="form-link">Resend code</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD RESET SCREEN -->
+<div class="screen" id="screen-reset">
+  <div class="auth-wrap" style="width:100%;align-items:center;justify-content:center;background:var(--off-white)">
+    <div class="auth-card" style="max-width:400px">
+      <div style="width:52px;height:52px;background:var(--gold-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:24px">🔑</div>
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Reset password</h2>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px">Enter your registered email — we'll send a reset link.</p>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="your@utech.edu.ng">
+      </div>
+      <button class="btn-primary btn-gold">Send Reset Link</button>
+      <p style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:16px"><a href="#" class="form-link" onclick="showScreen('screen-login')">← Back to sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- 2FA SCREEN -->
+<div class="screen" id="screen-2fa">
+  <div class="auth-wrap" style="width:100%;align-items:center;justify-content:center;background:var(--off-white)">
+    <div class="auth-card" style="max-width:420px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <div style="width:40px;height:40px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        </div>
+        <div>
+          <h2 style="font-size:18px;font-weight:700">Two-Factor Authentication</h2>
+          <p style="font-size:13px;color:var(--text-muted)">Choose your preferred method</p>
+        </div>
+      </div>
+      <div class="tfa-method selected">
+        <div class="tfa-icon">📱</div>
+        <div><div class="tfa-label">Authenticator App</div><div class="tfa-sub">Google / Microsoft Authenticator</div></div>
+      </div>
+      <div class="tfa-method">
+        <div class="tfa-icon">📩</div>
+        <div><div class="tfa-label">Email OTP</div><div class="tfa-sub">Code sent to your email</div></div>
+      </div>
+      <div class="tfa-method">
+        <div class="tfa-icon">📟</div>
+        <div><div class="tfa-label">SMS OTP</div><div class="tfa-sub">Sent to +234 *** **** 481</div></div>
+      </div>
+      <div class="tfa-app-mock">
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">Current Code</div>
+        <div class="tfa-code-display">4 8 2 7 1 9</div>
+        <div class="tfa-timer">Refreshes in 23s</div>
+      </div>
+      <div class="otp-row" style="margin-bottom:16px">
+        <input class="otp-input" maxlength="1" value="4">
+        <input class="otp-input" maxlength="1" value="8">
+        <input class="otp-input" maxlength="1" value="2">
+        <input class="otp-input" maxlength="1" value="7">
+        <input class="otp-input" maxlength="1" value="1">
+        <input class="otp-input" maxlength="1" value="9">
+      </div>
+      <button class="btn-primary btn-gold" onclick="showDash('Super Admin')">Verify & Enter UMS</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD SCREEN -->
+<div class="screen" id="screen-dash" style="display:none">
+  <div class="dash-wrap" style="width:100%">
+    <div class="sidebar">
+      <div class="sidebar-head">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/><path d="M12 2v20M3 7l9 5 9-5" stroke="white" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div class="sidebar-logo-text">U-Tech UMS<span>Management System</span></div>
+        </div>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-chip">
+          <div class="user-avatar" id="dash-avatar">SA</div>
+          <div class="user-info">
+            <div class="user-name" id="dash-name">Dr. Adebayo</div>
+            <div class="user-role" id="dash-role">Super Admin</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-label">Overview</div>
+          <div class="nav-item active" onclick="showPanel('overview',this)">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </div>
+          <div class="nav-item" onclick="showPanel('users',this)">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/></svg>
+            User Management
+            <span class="nav-badge">3</span>
+          </div>
+          <div class="nav-item" onclick="showPanel('roles',this)">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Roles & Permissions
+          </div>
+        </div>
+        <div class="nav-section" id="nav-academic">
+          <div class="nav-section-label">Academics</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>Admissions</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Courses</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Timetable</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Results &amp; GPA</div>
+        </div>
+        <div class="nav-section" id="nav-finance">
+          <div class="nav-section-label">Finance</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Payments</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finance Reports</div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-label">System</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Audit Logs</div>
+          <div class="nav-item" onclick="showScreen('screen-login')"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</div>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Dashboard Overview</div>
+        <div class="topbar-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input placeholder="Search students, courses, staff...">
+        </div>
+        <div class="topbar-actions">
+          <span class="sem-badge">2024/2025 · 1st Semester</span>
+          <div class="topbar-btn">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <div class="notif-dot"></div>
+          </div>
+          <div class="topbar-btn">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+
+        <!-- OVERVIEW PANEL -->
+        <div id="panel-overview">
+          <div class="phase-nav">
+            <button class="phase-btn active">Overview</button>
+            <button class="phase-btn">Admissions</button>
+            <button class="phase-btn">Finance</button>
+            <button class="phase-btn">Hostel</button>
+            <button class="phase-btn">Library</button>
+            <button class="phase-btn">Welfare</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card blue">
+              <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/></svg></div>
+              <div class="stat-val">12,847</div>
+              <div class="stat-label">Total Students</div>
+              <div class="stat-change up">▲ 4.2% vs last session</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+              <div class="stat-val">₦284M</div>
+              <div class="stat-label">Revenue Collected</div>
+              <div class="stat-change up">▲ 12.1% vs last month</div>
+            </div>
+            <div class="stat-card gold">
+              <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+              <div class="stat-val">2,104</div>
+              <div class="stat-label">Applicants (Active)</div>
+              <div class="stat-change up">▲ 18.7% this cycle</div>
+            </div>
+            <div class="stat-card purple">
+              <div class="stat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <div class="stat-val">847</div>
+              <div class="stat-label">Active Staff</div>
+              <div class="stat-change down">▼ 2 on leave</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Recent Users</span>
+                <span class="panel-link" onclick="showPanel('users',null)">View all →</span>
+              </div>
+              <div class="panel-body">
+                <table class="user-table">
+                  <thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Chidi Okonkwo</td><td><span class="role-pill pill-student">Student</span></td><td><span class="status-dot dot-active"></span>Active</td></tr>
+                    <tr><td>Prof. Adaeze Eze</td><td><span class="role-pill pill-lecturer">Lecturer</span></td><td><span class="status-dot dot-active"></span>Active</td></tr>
+                    <tr><td>Mrs. Funke Bello</td><td><span class="role-pill pill-staff">Bursary</span></td><td><span class="status-dot dot-active"></span>Active</td></tr>
+                    <tr><td>Mr. Kalu Ikpeazu</td><td><span class="role-pill pill-admin">Admin</span></td><td><span class="status-dot dot-inactive"></span>Pending</td></tr>
+                    <tr><td>Tunde Fashola</td><td><span class="role-pill pill-student">Student</span></td><td><span class="status-dot dot-active"></span>Active</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">System Activity</span>
+                <span class="panel-link">Live feed</span>
+              </div>
+              <div class="panel-body">
+                <ul class="activity-list">
+                  <li class="activity-item">
+                    <div class="activity-icon login">🔐</div>
+                    <div class="activity-text"><strong>Dr. Ngozi Obi</strong> logged in from Lagos · IP 102.89.x.x</div>
+                    <div class="activity-time">2m ago</div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon reg">✅</div>
+                    <div class="activity-text"><strong>Amaka Osei</strong> completed email verification</div>
+                    <div class="activity-time">14m ago</div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon warn">⚠️</div>
+                    <div class="activity-text">5 failed login attempts on <strong>200@utech.edu.ng</strong></div>
+                    <div class="activity-time">31m ago</div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon reg">🎓</div>
+                    <div class="activity-text"><strong>146 students</strong> registered courses this morning</div>
+                    <div class="activity-time">1hr ago</div>
+                  </li>
+                  <li class="activity-item">
+                    <div class="activity-icon login">💳</div>
+                    <div class="activity-text">Payment of ₦85,000 confirmed for <strong>CSE/2021/047</strong></div>
+                    <div class="activity-time">2hr ago</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="panel">
+              <div class="panel-head"><span class="panel-title">Users by Role</span></div>
+              <div class="panel-body">
+                <div class="role-chart">
+                  <div class="role-bar-row"><div class="role-bar-label">Students</div><div class="role-bar-track"><div class="role-bar-fill" style="width:88%;background:#3B82F6"></div></div><div class="role-bar-count">12,847</div></div>
+                  <div class="role-bar-row"><div class="role-bar-label">Lecturers</div><div class="role-bar-track"><div class="role-bar-fill" style="width:42%;background:#8B5CF6"></div></div><div class="role-bar-count">614</div></div>
+                  <div class="role-bar-row"><div class="role-bar-label">Admin Staff</div><div class="role-bar-track"><div class="role-bar-fill" style="width:16%;background:var(--gold)"></div></div><div class="role-bar-count">233</div></div>
+                  <div class="role-bar-row"><div class="role-bar-label">Bursary</div><div class="role-bar-track"><div class="role-bar-fill" style="width:6%;background:var(--success)"></div></div><div class="role-bar-count">88</div></div>
+                  <div class="role-bar-row"><div class="role-bar-label">Parents</div><div class="role-bar-track"><div class="role-bar-fill" style="width:24%;background:#F59E0B"></div></div><div class="role-bar-count">3,521</div></div>
+                  <div class="role-bar-row"><div class="role-bar-label">Alumni</div><div class="role-bar-track"><div class="role-bar-fill" style="width:38%;background:#64748B"></div></div><div class="role-bar-count">5,608</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><span class="panel-title">Quick Actions</span></div>
+              <div class="panel-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div style="padding:14px;background:var(--off-white);border-radius:10px;cursor:pointer;transition:.12s;text-align:center" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--off-white)'">
+                    <div style="font-size:22px;margin-bottom:6px">👤</div>
+                    <div style="font-size:12px;font-weight:600;color:var(--text)">Add User</div>
+                  </div>
+                  <div style="padding:14px;background:var(--off-white);border-radius:10px;cursor:pointer;transition:.12s;text-align:center" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--off-white)'">
+                    <div style="font-size:22px;margin-bottom:6px">📊</div>
+                    <div style="font-size:12px;font-weight:600;color:var(--text)">Reports</div>
+                  </div>
+                  <div style="padding:14px;background:var(--off-white);border-radius:10px;cursor:pointer;transition:.12s;text-align:center" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--off-white)'">
+                    <div style="font-size:22px;margin-bottom:6px">📋</div>
+                    <div style="font-size:12px;font-weight:600;color:var(--text)">Admissions</div>
+                  </div>
+                  <div style="padding:14px;background:var(--off-white);border-radius:10px;cursor:pointer;transition:.12s;text-align:center" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--off-white)'">
+                    <div style="font-size:22px;margin-bottom:6px">⚙️</div>
+                    <div style="font-size:12px;font-weight:600;color:var(--text)">Settings</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USER MANAGEMENT PANEL -->
+        <div id="panel-users" style="display:none">
+          <div style="margin-bottom:20px">
+            <h2 style="font-size:18px;font-weight:700;margin-bottom:4px">User Management</h2>
+            <p style="font-size:13px;color:var(--text-muted)">Create, edit, and manage all user accounts and role assignments.</p>
+          </div>
+          <div class="um-toolbar">
+            <div class="um-search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input placeholder="Search by name, email, matric...">
+            </div>
+            <select class="um-filter">
+              <option>All Roles</option>
+              <option>Super Admin</option>
+              <option>Admin</option>
+              <option>Lecturer</option>
+              <option>Student</option>
+              <option>Parent</option>
+              <option>Alumni</option>
+            </select>
+            <select class="um-filter">
+              <option>All Status</option>
+              <option>Active</option>
+              <option>Inactive</option>
+              <option>Pending</option>
+            </select>
+            <button class="btn-add">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add User
+            </button>
+          </div>
+          <div class="users-panel">
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th><input type="checkbox"></th>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Department</th>
+                  <th>Status</th>
+                  <th>Last Login</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><div class="user-cell"><div class="u-avatar" style="background:#DBEAFE;color:#1E40AF">JA</div><div><div class="u-name">Dr. John Adeyemi</div><div class="u-email">j.adeyemi@utech.edu.ng</div></div></div></td>
+                  <td><span class="role-pill pill-super">Super Admin</span></td>
+                  <td>Management</td>
+                  <td><span class="status-badge badge-active">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:12px">Just now</td>
+                  <td><div class="action-btns"><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="action-btn danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div></div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><div class="user-cell"><div class="u-avatar" style="background:#EDE9FE;color:#6D28D9">NO</div><div><div class="u-name">Prof. Ngozi Obi</div><div class="u-email">n.obi@utech.edu.ng</div></div></div></td>
+                  <td><span class="role-pill pill-lecturer">Lecturer</span></td>
+                  <td>Computer Science</td>
+                  <td><span class="status-badge badge-active">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:12px">2m ago</td>
+                  <td><div class="action-btns"><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="action-btn danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div></div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><div class="user-cell"><div class="u-avatar" style="background:#D1FAE5;color:#065F46">CO</div><div><div class="u-name">Chidi Okonkwo</div><div class="u-email">CSE/2022/114</div></div></div></td>
+                  <td><span class="role-pill pill-student">Student</span></td>
+                  <td>Engineering</td>
+                  <td><span class="status-badge badge-active">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:12px">1hr ago</td>
+                  <td><div class="action-btns"><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="action-btn danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div></div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><div class="user-cell"><div class="u-avatar" style="background:#FEF3C7;color:#92400E">FB</div><div><div class="u-name">Mrs. Funke Bello</div><div class="u-email">f.bello@utech.edu.ng</div></div></div></td>
+                  <td><span class="role-pill pill-staff">Bursary</span></td>
+                  <td>Finance Dept.</td>
+                  <td><span class="status-badge badge-active">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:12px">Yesterday</td>
+                  <td><div class="action-btns"><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="action-btn danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div></div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td><div class="user-cell"><div class="u-avatar" style="background:#F1F5F9;color:var(--slate)">KI</div><div><div class="u-name">Mr. Kalu Ikpeazu</div><div class="u-email">k.ikpeazu@utech.edu.ng</div></div></div></td>
+                  <td><span class="role-pill pill-admin">Admin</span></td>
+                  <td>Registry</td>
+                  <td><span class="status-badge badge-pending">Pending</span></td>
+                  <td style="color:var(--text-muted);font-size:12px">Never</td>
+                  <td><div class="action-btns"><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="action-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="action-btn danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+            <span style="font-size:13px;color:var(--text-muted)">Showing 5 of 13,892 users</span>
+            <div style="display:flex;gap:6px">
+              <button style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:white;font-size:13px;cursor:pointer">← Previous</button>
+              <button style="padding:6px 12px;border:1px solid var(--navy);border-radius:6px;background:var(--navy);color:white;font-size:13px;cursor:pointer">1</button>
+              <button style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:white;font-size:13px;cursor:pointer">2</button>
+              <button style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:white;font-size:13px;cursor:pointer">3</button>
+              <button style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:white;font-size:13px;cursor:pointer">Next →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROLES PANEL -->
+        <div id="panel-roles" style="display:none">
+          <div style="margin-bottom:20px">
+            <h2 style="font-size:18px;font-weight:700;margin-bottom:4px">Roles & Permissions</h2>
+            <p style="font-size:13px;color:var(--text-muted)">Configure what each role can see and do across the system.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            <div style="background:white;border:2px solid var(--gold);border-radius:12px;padding:18px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <div style="width:36px;height:36px;background:var(--gold-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">👑</div>
+                <div><div style="font-weight:700;font-size:14px">Super Admin</div><div style="font-size:11px;color:var(--gold-dark)">Full system access</div></div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);line-height:2">
+                ✅ All modules<br>✅ User management<br>✅ System settings<br>✅ Audit logs<br>✅ Backup & restore<br>✅ Reports & analytics
+              </div>
+            </div>
+            <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <div style="width:36px;height:36px;background:#DBEAFE;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🛡</div>
+                <div><div style="font-weight:700;font-size:14px">Admin</div><div style="font-size:11px;color:#3B82F6">Operational access</div></div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);line-height:2">
+                ✅ User management<br>✅ Reports<br>✅ Admissions<br>✅ Academic module<br>❌ System settings<br>❌ Backup access
+              </div>
+            </div>
+            <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <div style="width:36px;height:36px;background:#EDE9FE;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">📚</div>
+                <div><div style="font-weight:700;font-size:14px">Lecturer</div><div style="font-size:11px;color:#8B5CF6">Academic access</div></div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);line-height:2">
+                ✅ Course materials<br>✅ Attendance<br>✅ Results input<br>✅ Assignments<br>❌ Finance module<br>❌ Admin controls
+              </div>
+            </div>
+            <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <div style="width:36px;height:36px;background:#D1FAE5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🎓</div>
+                <div><div style="font-weight:700;font-size:14px">Student</div><div style="font-size:11px;color:var(--success)">Student portal</div></div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);line-height:2">
+                ✅ Dashboard<br>✅ Course reg.<br>✅ Results/GPA<br>✅ Library<br>✅ Payments<br>❌ Any admin view
+              </div>
+            </div>
+            <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <div style="width:36px;height:36px;background:#FEF3C7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">💰</div>
+                <div><div style="font-weight:700;font-size:14px">Bursary</div><div style="font-size:11px;color:#D97706">Finance access</div></div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);line-height:2">
+                ✅ Payments<br>✅ Fee management<br>✅ Receipts<br>✅ Financial reports<br>❌ Academic data<br>❌ User management
+              </div>
+            </div>
+            <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <div style="width:36px;height:36px;background:#F3F4F6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">👨‍👩‍👧</div>
+                <div><div style="font-weight:700;font-size:14px">Parent</div><div style="font-size:11px;color:var(--text-muted)">Read-only view</div></div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);line-height:2">
+                ✅ Child's results<br>✅ Fee status<br>✅ Attendance view<br>❌ Edit anything<br>❌ Course access<br>❌ Admin access
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.style.display='none';s.classList.remove('active')});
+  const el=document.getElementById(id);
+  el.style.display='flex';el.classList.add('active');
+}
+function showDash(role){
+  const avatarMap={
+    'Super Admin':'SA','Student':'ST','Lecturer':'LC','Admin':'AD',
+    'Bursary':'BU','Registrar':'RG','Hostel Officer':'HO','Parent':'PR','Alumni':'AL'
+  };
+  const nameMap={
+    'Super Admin':'Dr. Adebayo','Student':'Chidi Okonkwo','Lecturer':'Prof. Ngozi Obi',
+    'Admin':'Mr. Kalu I.','Bursary':'Mrs. Funke B.','Registrar':'Mr. Emeka O.',
+    'Hostel Officer':'Miss Amaka A.','Parent':'Mr. Fashola T.','Alumni':'Ms. Chioma E.'
+  };
+  document.getElementById('dash-avatar').textContent=avatarMap[role]||'US';
+  document.getElementById('dash-name').textContent=nameMap[role]||'User';
+  document.getElementById('dash-role').textContent=role;
+  showPanel('overview',null);
+  showScreen('screen-dash');
+}
+function showPanel(name,navEl){
+  document.querySelectorAll('[id^="panel-"]').forEach(p=>p.style.display='none');
+  const p=document.getElementById('panel-'+name);
+  if(p)p.style.display='block';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(navEl)navEl.classList.add('active');
+  const titleMap={overview:'Dashboard Overview',users:'User Management',roles:'Roles & Permissions'};
+  document.getElementById('topbar-title').textContent=titleMap[name]||'Dashboard';
+}
+function selectRole(el){
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+</body>
+</html>
